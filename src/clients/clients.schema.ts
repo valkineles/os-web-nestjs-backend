@@ -1,5 +1,4 @@
 import * as mongoose from 'mongoose';
-import { mongoo_paginate } from 'mongoose-paginate-v2';
 
 export const ClientSchema = new mongoose.Schema(
   {
@@ -12,5 +11,3 @@ export const ClientSchema = new mongoose.Schema(
     timestamps: true,
   },
 );
-
-ClientSchema.plugin(mongoo_paginate);
