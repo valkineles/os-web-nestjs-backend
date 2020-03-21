@@ -1,27 +1,29 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { PaginateModel, PaginateResult } from 'mongoose';
 
-import { Client } from './clients.interface';
+import { IClient } from './clients.interface';
 
 @Injectable()
 export class ClientsService {
-  constructor(@InjectModel('Client') private ClientModel: Model<Client>) {}
+  constructor(
+    @InjectModel('Client') private ClientModel: PaginateModel<IClient>,
+  ) {}
 
-  async create(client: Client) {
+  async create(client: IClient) {
     const createClient = new this.ClientModel(client);
     return await createClient.save();
   }
 
-  async getAll(): Promise<Client[]> {
-    return await this.ClientModel.find().exec();
+  async getAll(page, limit): Promise<PaginateResult<IClient>> {
+    return await this.ClientModel.paginate({}, { page, limit });
   }
 
   async getById(id: string) {
     return await this.ClientModel.findById(id).exec();
   }
 
-  async udpate(id: string, client: Client) {
+  async udpate(id: string, client: IClient) {
     return await this.ClientModel.findByIdAndUpdate(id, client, { new: true });
   }
 

@@ -1,6 +1,6 @@
 import { Document } from 'mongoose';
 
-export interface Client extends Document {
+export interface IClient extends Document {
   nome: string;
   email: string;
   telefone: string;
