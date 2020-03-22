@@ -1,10 +1,11 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ClientsModule } from './clients/clients.module';
+import { JwtMiddleware } from './middlewares/JwtMiddleware.middleware';
 
 @Module({
   imports: [
@@ -18,19 +19,16 @@ import { ClientsModule } from './clients/clients.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
-
-/*
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(JwtMiddleware)
+    consumer
+      .apply(JwtMiddleware)
       .exclude({ path: 'users/login', method: RequestMethod.POST }) // acho que isso não existia, mas só como exemplo
       .forRoutes(
         { path: 'produtos', method: RequestMethod.ALL },
-        { path: 'clientes', method: RequestMethod.ALL },
+        { path: 'clients', method: RequestMethod.ALL },
         { path: 'services', method: RequestMethod.ALL },
         { path: 'users', method: RequestMethod.ALL },
-      )
+      );
   }
 }
-*/
