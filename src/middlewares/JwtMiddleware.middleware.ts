@@ -33,7 +33,7 @@ export class JwtMiddleware implements NestMiddleware {
           .json({ success: false, message: 'Usuário não autorizado !' });
       }
 
-      // req.tokenData = tokenData;
+      //req.tokenData = tokenData;
 
       next();
     } catch (error) {

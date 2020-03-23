@@ -1,6 +1,7 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
+import { getFilters } from './../middlewares/filters.middlewares';
 import { ClientsController } from './clients.controller';
 import { ClientSchema } from './clients.schema';
 import { ClientsService } from './clients.service';
@@ -12,4 +13,10 @@ import { ClientsService } from './clients.service';
   controllers: [ClientsController],
   providers: [ClientsService],
 })
-export class ClientsModule {}
+export class ClientsModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(getFilters)
+      .forRoutes({ path: 'clients', method: RequestMethod.GET });
+  }
+}

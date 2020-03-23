@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel, PaginateResult } from 'mongoose';
 
@@ -11,8 +11,17 @@ export class ClientsService {
   ) {}
 
   async create(client: IClient) {
-    const createClient = new this.ClientModel(client);
-    return await createClient.save();
+    if (client.nome.length < 10)
+      throw new HttpException(
+        'o nome deve ter mais de 10 caracteres !',
+        HttpStatus.BAD_REQUEST,
+      );
+    try {
+      const createClient = new this.ClientModel(client);
+      return await createClient.save();
+    } catch (error) {
+      throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   async getAll(page, limit): Promise<PaginateResult<IClient>> {

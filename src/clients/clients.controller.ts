@@ -20,6 +20,7 @@ export class ClientsController {
   @Get()
   async getAll(@Query() query): Promise<PaginateResult<IClient>> {
     const { page = 1, limit = 5 } = query;
+    console.log('query: ' + JSON.stringify(query));
     return this.clientService.getAll(page, limit);
   }
 
