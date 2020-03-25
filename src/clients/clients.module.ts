@@ -17,6 +17,6 @@ export class ClientsModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(getFilters)
-      .forRoutes({ path: 'clients', method: RequestMethod.GET });
+      .forRoutes({ path: 'api/v1/clients', method: RequestMethod.GET });
   }
 }

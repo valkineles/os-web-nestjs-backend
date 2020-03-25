@@ -1,10 +1,10 @@
-import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Query, Request } from '@nestjs/common';
 import { PaginateResult } from 'mongoose';
 
 import { IClient } from './clients.interface';
 import { ClientsService } from './clients.service';
 
-@Controller('clients')
+@Controller('api/v1/clients')
 export class ClientsController {
   constructor(private clientService: ClientsService) {}
 
@@ -18,10 +18,12 @@ export class ClientsController {
   }
 
   @Get()
-  async getAll(@Query() query): Promise<PaginateResult<IClient>> {
+  async getAll(
+    @Request() req,
+    @Query() query,
+  ): Promise<PaginateResult<IClient>> {
     const { page = 1, limit = 5 } = query;
-    console.log('query: ' + JSON.stringify(query));
-    return this.clientService.getAll(page, limit);
+    return this.clientService.getAll(req.filters, page, limit);
   }
 
   @Get(':id')

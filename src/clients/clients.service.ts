@@ -11,11 +11,6 @@ export class ClientsService {
   ) {}
 
   async create(client: IClient) {
-    if (client.nome.length < 10)
-      throw new HttpException(
-        'o nome deve ter mais de 10 caracteres !',
-        HttpStatus.BAD_REQUEST,
-      );
     try {
       const createClient = new this.ClientModel(client);
       return await createClient.save();
@@ -24,8 +19,12 @@ export class ClientsService {
     }
   }
 
-  async getAll(page, limit): Promise<PaginateResult<IClient>> {
-    return await this.ClientModel.paginate({}, { page, limit });
+  async getAll(
+    filters: Array<string>,
+    page: number,
+    limit: number,
+  ): Promise<PaginateResult<IClient>> {
+    return await this.ClientModel.paginate(filters, { page, limit });
   }
 
   async getById(id: string) {
