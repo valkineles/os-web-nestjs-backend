@@ -5,8 +5,11 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ClientsModule } from './clients/clients.module';
+import { MaintenancesModule } from './maintenances/maintenances.module';
 import { JwtMiddleware } from './middlewares/JwtMiddleware.middleware';
 import { ProductsModule } from './products/products.module';
+import { ServicesModule } from './services/services.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -17,6 +20,9 @@ import { ProductsModule } from './products/products.module';
     }),
     ClientsModule,
     ProductsModule,
+    UsersModule,
+    ServicesModule,
+    MaintenancesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
@@ -25,12 +31,13 @@ export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(JwtMiddleware)
-      .exclude({ path: 'users/login', method: RequestMethod.POST }) // acho que isso não existia, mas só como exemplo
+      .exclude({ path: 'users/login', method: RequestMethod.POST })
       .forRoutes(
         { path: 'api/v1/products', method: RequestMethod.ALL },
         { path: 'api/v1/clients', method: RequestMethod.ALL },
         { path: 'api/v1/services', method: RequestMethod.ALL },
         { path: 'api/v1/users', method: RequestMethod.ALL },
+        { path: 'api/v1/maintenance', method: RequestMethod.ALL },
       );
   }
 }

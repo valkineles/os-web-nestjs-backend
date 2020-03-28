@@ -41,4 +41,3 @@ export class ProductsService {
     return await this.productModel.findByIdAndDelete(id);
   }
 }
-'';
